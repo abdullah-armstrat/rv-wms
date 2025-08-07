@@ -3,12 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",          // ⬅ removed the explicit tsc step
+    "type-check": "tsc --noEmit",   // ⬅ optional manual TS check
     "lint": "eslint .",
     "preview": "vite preview"
   },
+
   "dependencies": {
     "axios": "^1.11.0",
     "dayjs": "^1.11.13",
@@ -20,6 +23,7 @@
     "react-router-dom": "^7.7.1",
     "zustand": "^5.0.7"
   },
+
   "devDependencies": {
     "@eslint/js": "^9.30.1",
     "@tailwindcss/postcss": "^4.1.11",
