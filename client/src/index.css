@@ -1,0 +1,77 @@
+/* 1. Tailwind core */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 2. Global HTML/body reset and smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  @apply bg-gray-50 text-gray-800 antialiased;
+}
+
+/* 3. Toast “fade-in-out” animation */
+@keyframes fade-in-out {
+  0%   { opacity: 0; transform: translateY(10px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  90%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+.animate-fade-in-out {
+  animation: fade-in-out 3s ease forwards;
+}
+
+/* 4. Modal backdrop helper */
+.modal-backdrop {
+  @apply fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-40;
+}
+
+/* 5. Accessible focus styles on interactive elements */
+button:focus,
+a:focus,
+input:focus,
+textarea:focus {
+  @apply outline-none ring-2 ring-offset-2 ring-indigo-500;
+}
+
+/* 6. Optional custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 4px;
+}
+
+/* 7. Utility for card hover lift */
+.card-hover {
+  @apply bg-white rounded-xl shadow p-4 transition-transform transform hover:-translate-y-1 hover:shadow-lg;
+}
+
+/* 8. Scan‐animation overlay & viewfinder */
+
+/* Scan line animation */
+@keyframes scanLine {
+  0%   { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* Full‐screen dark overlay during scanning */
+.scan-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+/* Centered “viewfinder” box */
+.viewfinder {
+  @apply relative w-64 h-64 border-4 border-white rounded-lg overflow-hidden;
+}
+.viewfinder::after {
+  content: "";
+  @apply absolute left-0 w-full h-0.5 bg-green-400;
+  animation: scanLine 1.5s linear forwards;
+}

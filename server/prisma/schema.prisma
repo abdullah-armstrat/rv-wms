@@ -1,0 +1,85 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Warehouse {
+  id       Int     @id @default(autoincrement())
+  name     String
+  address  String
+  country  String
+  timezone String
+  manager  String
+  logoUrl  String?
+  users    User[]
+  zones    Zone[]
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  passwordHash  String
+  name          String
+  role          String // "ADMIN" | "INVENTORY_SUP" | "PICKING_SUP"
+  photoUrl      String?
+  warehouse     Warehouse      @relation(fields: [warehouseId], references: [id])
+  warehouseId   Int
+  createdAt     DateTime       @default(now())
+  inventoryLogs InventoryLog[]
+}
+
+model Zone {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String?
+  warehouse   Warehouse  @relation(fields: [warehouseId], references: [id])
+  warehouseId Int
+  locations   Location[]
+}
+
+model Location {
+  id        Int            @id @default(autoincrement())
+  code      String         @unique
+  type      String // "SHELF" or "BIN"
+  zone      Zone           @relation(fields: [zoneId], references: [id])
+  zoneId    Int
+  qrPath    String?
+  inventory Inventory[]
+  logs      InventoryLog[]
+}
+
+model Product {
+  id        Int            @id @default(autoincrement())
+  name      String
+  sku       String         @unique
+  category  String
+  inventory Inventory[]
+  logs      InventoryLog[]
+}
+
+model Inventory {
+  id         Int      @id @default(autoincrement())
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  quantity   Int      @default(0)
+
+  @@unique([locationId, productId])
+}
+
+model InventoryLog {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  change     Int
+  createdAt  DateTime @default(now())
+}
