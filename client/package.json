@@ -6,8 +6,8 @@
 
   "scripts": {
     "dev": "vite",
-    "build": "vite build",          // ⬅ removed the explicit tsc step
-    "type-check": "tsc --noEmit",   // ⬅ optional manual TS check
+    "build": "vite build",
+    "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "preview": "vite preview"
   },
